@@ -20,10 +20,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="submit"
         android:id="@+id/button"
         android:layout_below="@+id/inputText"
         android:layout_alignRight="@+id/inputText"
-        android:layout_alignEnd="@+id/inputText" />
+        android:layout_alignEnd="@+id/inputText"
+        android:onClick="submit" />
 
 </RelativeLayout>
