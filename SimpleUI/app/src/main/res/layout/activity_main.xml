@@ -27,4 +27,14 @@
         android:layout_alignEnd="@+id/inputText"
         android:onClick="submit" />
 
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hide"
+        android:id="@+id/hideCheckBox"
+        android:layout_below="@+id/inputText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:checked="false" />
+
 </RelativeLayout>
