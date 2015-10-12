@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         hideCheckBox = (CheckBox) findViewById(R.id.hideCheckBox);
 
+        inputText.setText(sp.getString("inputText", ""));
     }
 
     public void submit(View view) {
