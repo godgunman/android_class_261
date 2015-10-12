@@ -8,9 +8,11 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
 
+    private ListView historyListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +61,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        historyListView = (ListView) findViewById(R.id.historyListView);
+
         inputText.setText(sp.getString("inputText", ""));
         hideCheckBox.setChecked(sp.getBoolean("hideCheckBox", false));
+
+        setHistory();
+    }
+
+    private void setHistory() {
+
+        String[] data = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
+        historyListView.setAdapter(adapter);
     }
 
     public void submit(View view) {
