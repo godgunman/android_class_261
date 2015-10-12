@@ -70,8 +70,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Utils.writeFile(this, "history.txt", text + "\n");
+        String fileContent = Utils.readFile(this, "history.txt");
 
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, fileContent, Toast.LENGTH_LONG).show();
         inputText.setText("");
     }
 
