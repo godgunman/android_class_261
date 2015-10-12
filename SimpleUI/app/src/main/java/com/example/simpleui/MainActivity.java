@@ -74,7 +74,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setStoreInfo() {
-
+        String[] data = getResources().getStringArray(R.array.storeInfo);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item ,data);
+        storeInfoSpinner.setAdapter(adapter);
     }
 
     private void setHistory() {

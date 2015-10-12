@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="storeInfo">
+        <item>台大店</item>
+        <item>永和店</item>
+        <item>西門店</item>
+        <item>松山店</item>
+        <item>天母店</item>
+        <item>板橋店</item>
+    </string-array>
+</resources>
