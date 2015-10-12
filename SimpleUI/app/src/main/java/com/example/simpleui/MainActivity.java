@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
 
     private ListView historyListView;
+    private Spinner storeInfoSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,16 +64,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
         historyListView = (ListView) findViewById(R.id.historyListView);
+        storeInfoSpinner = (Spinner) findViewById(R.id.storeInfoSpinner);
 
         inputText.setText(sp.getString("inputText", ""));
         hideCheckBox.setChecked(sp.getBoolean("hideCheckBox", false));
 
         setHistory();
+        setStoreInfo();
+    }
+
+    private void setStoreInfo() {
+
     }
 
     private void setHistory() {
 
-        String[] data = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+        String[] data = Utils.readFile(this, "history.txt").split("\n");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
         historyListView.setAdapter(adapter);
     }
@@ -84,10 +92,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Utils.writeFile(this, "history.txt", text + "\n");
-        String fileContent = Utils.readFile(this, "history.txt");
-
-        Toast.makeText(this, fileContent, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
         inputText.setText("");
+
+        setHistory();
     }
 
     @Override
