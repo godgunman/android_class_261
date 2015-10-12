@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
             text = "*********";
         }
 
+        Utils.writeFile(this, "history.txt", text + "\n");
+
         Toast.makeText(this, text, Toast.LENGTH_LONG).show();
         inputText.setText("");
     }
