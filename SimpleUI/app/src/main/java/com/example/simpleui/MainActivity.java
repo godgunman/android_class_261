@@ -116,6 +116,15 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_DRINK_MENU);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_DRINK_MENU) {
+            if(resultCode == RESULT_OK){
+                drinkMenuResult = data.getStringExtra("result");
+                Log.d("debug", drinkMenuResult);
+            }
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

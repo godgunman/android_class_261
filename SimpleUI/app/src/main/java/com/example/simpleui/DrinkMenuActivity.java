@@ -1,12 +1,18 @@
 package com.example.simpleui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class DrinkMenuActivity extends AppCompatActivity {
 
@@ -46,5 +52,35 @@ public class DrinkMenuActivity extends AppCompatActivity {
         Button button = (Button) view;
         int count = Integer.parseInt(button.getText().toString());
         button.setText(String.valueOf(count + 1));
+    }
+
+    public void done(View view){
+        Intent data = new Intent();
+        data.putExtra("result", getValue().toString());
+        setResult(RESULT_OK, data);
+        finish();
+    }
+
+    private JSONArray getValue(){
+        JSONArray result = new JSONArray();
+        LinearLayout root = (LinearLayout) findViewById(R.id.root);
+        int len = root.getChildCount();
+        for (int i = 1; i < len - 1; i++){
+            LinearLayout ll = (LinearLayout) root.getChildAt(i);
+            String name = ((TextView)ll.getChildAt(0)).getText().toString();
+            int l = Integer.parseInt(((Button) ll.getChildAt(1)).getText().toString());
+            int m = Integer.parseInt(((Button)ll.getChildAt(2)).getText().toString());
+            JSONObject object = new JSONObject();
+            try {
+                object.put("name", name);
+                object.put("l", l);
+                object.put("m", m);
+                result.put(object);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return result;
     }
 }
