@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 public class DrinkMenuActivity extends AppCompatActivity {
 
@@ -33,5 +35,11 @@ public class DrinkMenuActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void add(View view){
+        Button button = (Button) view;
+        int count = Integer.parseInt(button.getText().toString());
+        button.setText(String.valueOf(count + 1));
     }
 }
