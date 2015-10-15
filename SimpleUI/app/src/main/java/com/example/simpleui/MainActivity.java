@@ -108,6 +108,15 @@ public class MainActivity extends AppCompatActivity {
         setHistory();
     }
 
+    public void goToDrinkMenu(View view){
+        String storeInfoString = (String) storeInfoSpinner.getSelectedItem();
+        Intent intent = new Intent();
+        intent.setClass(this, DrinkMenuActivity.class);
+        intent.putExtra("store_info", storeInfoString);
+        startActivityForResult(intent, REQUEST_DRINK_MENU);
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
