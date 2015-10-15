@@ -1,9 +1,11 @@
 package com.example.simpleui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +18,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
 
     private EditText inputText;
@@ -26,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView historyListView;
     private Spinner storeInfoSpinner;
+
+    private static final int REQUEST_DRINK_MENU = 1;
+    private String drinkMenuResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void submit(View view) {
         String text = inputText.getText().toString();
-
         if (hideCheckBox.isChecked()) {
             text = "*********";
         }
@@ -121,4 +129,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
