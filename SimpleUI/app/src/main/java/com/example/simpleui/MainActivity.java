@@ -15,12 +15,18 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -84,15 +90,43 @@ public class MainActivity extends AppCompatActivity {
 
     private void setStoreInfo() {
         String[] data = getResources().getStringArray(R.array.storeInfo);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item ,data);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, data);
         storeInfoSpinner.setAdapter(adapter);
     }
 
     private void setHistory() {
 
-        String[] data = Utils.readFile(this, "history.txt").split("\n");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
+        String[] rawData = Utils.readFile(this, "history.txt").split("\n");
+        List<Map<String, String>> data = new ArrayList<>();
+
+        for (int i = 0; i < rawData.length; i++) {
+            try {
+                JSONObject object = new JSONObject(rawData[i]);
+                String note = object.getString("note");
+                String store_info = object.getString("store_info");
+                JSONArray menu = object.getJSONArray("menu");
+
+                Map<String, String> item = new HashMap<>();
+                item.put("note", note);
+                item.put("store_info", store_info);
+                item.put("drink_number", getDrinkNumber(menu));
+
+                data.add(item);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        String[] from = new String[]{"note", "store_info", "drink_number"};
+        int[] to = new int[]{R.id.note, R.id.store_info, R.id.drink_number};
+
+        SimpleAdapter adapter = new SimpleAdapter(this, data, R.layout.listview_item, from, to);
         historyListView.setAdapter(adapter);
+    }
+
+    private String getDrinkNumber(JSONArray menu) {
+        return "13";
     }
 
     public void submit(View view) {
@@ -103,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         JSONObject object = new JSONObject();
         try {
             object.put("note", text);
-            object.put("store_info", (String)storeInfoSpinner.getSelectedItem());
+            object.put("store_info", (String) storeInfoSpinner.getSelectedItem());
             object.put("menu", new JSONArray(drinkMenuResult));
 
             text = object.toString();
@@ -118,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void goToDrinkMenu(View view){
+    public void goToDrinkMenu(View view) {
         String storeInfoString = (String) storeInfoSpinner.getSelectedItem();
         Intent intent = new Intent();
         intent.setClass(this, DrinkMenuActivity.class);
@@ -128,8 +162,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == REQUEST_DRINK_MENU) {
-            if(resultCode == RESULT_OK){
+        if (requestCode == REQUEST_DRINK_MENU) {
+            if (resultCode == RESULT_OK) {
                 drinkMenuResult = data.getStringExtra("result");
                 Log.d("debug", drinkMenuResult);
             }
