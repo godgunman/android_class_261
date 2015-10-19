@@ -19,7 +19,6 @@ import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.parse.Parse;
 import com.parse.ParseObject;
 
 import org.json.JSONArray;
@@ -28,7 +27,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,15 +47,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "x3CL9BmV2TTCs6lBCxgbJ7rm4Fautlg8dWXvADrb",
-                "0O7uIE3iLyNprXUzhq7dAwayPrsRHBm1rTfVFQGX");
-
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
 
         setContentView(R.layout.activity_main);
 
@@ -108,16 +97,6 @@ public class MainActivity extends AppCompatActivity {
         storeInfoSpinner.setAdapter(adapter);
     }
 
-    public void cc() {
-
-        Map<Integer, Boolean> item = new HashMap<>();
-
-        item.put(8, true);
-        item.put(1, false);
-
-        boolean a = item.get(1);
-    }
-
     private void setHistory() {
 
         String[] rawData = Utils.readFile(this, "history.txt").split("\n");
@@ -164,16 +143,20 @@ public class MainActivity extends AppCompatActivity {
             object.put("store_info", (String) storeInfoSpinner.getSelectedItem());
             object.put("menu", new JSONArray(drinkMenuResult));
 
-            text = object.toString();
-            Utils.writeFile(this, "history.txt", text + "\n");
+            Utils.writeFile(this, "history.txt", object.toString() + "\n");
             Toast.makeText(this, text, Toast.LENGTH_LONG).show();
             inputText.setText("");
             setHistory();
 
+            ParseObject orderObject = new ParseObject("Order");
+            orderObject.put("note", text);
+            orderObject.put("store_info", storeInfoSpinner.getSelectedItem());
+            orderObject.put("menu", new JSONArray(drinkMenuResult));
+            orderObject.saveInBackground();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     public void goToDrinkMenu(View view) {
