@@ -104,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
         try {
             object.put("note", text);
             object.put("store_info", (String)storeInfoSpinner.getSelectedItem());
-            object.put("menu", drinkMenuResult);
+            object.put("menu", new JSONArray(drinkMenuResult));
+
             text = object.toString();
             Utils.writeFile(this, "history.txt", text + "\n");
             Toast.makeText(this, text, Toast.LENGTH_LONG).show();

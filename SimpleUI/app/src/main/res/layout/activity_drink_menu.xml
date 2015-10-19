@@ -87,6 +87,7 @@
             android:layout_height="wrap_content"
             android:text="DONE"
             android:id="@+id/button7"
+            android:onClick="done"
             android:layout_weight="1" />
     </LinearLayout>
 
