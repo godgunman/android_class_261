@@ -19,7 +19,9 @@ import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -99,26 +101,29 @@ public class MainActivity extends AppCompatActivity {
 
     private void setHistory() {
 
-        String[] rawData = Utils.readFile(this, "history.txt").split("\n");
+        ParseQuery<ParseObject> query = new ParseQuery<>("Order");
+        List<ParseObject> rawData = null;
+
+        try {
+            rawData = query.find();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         List<Map<String, String>> data = new ArrayList<>();
 
-        for (int i = 0; i < rawData.length; i++) {
-            try {
-                JSONObject object = new JSONObject(rawData[i]);
-                String note = object.getString("note");
-                String store_info = object.getString("store_info");
-                JSONArray menu = object.getJSONArray("menu");
+        for (int i = 0; i < rawData.size(); i++) {
+            ParseObject object = rawData.get(i);
+            String note = object.getString("note");
+            String store_info = object.getString("store_info");
+            JSONArray menu = object.getJSONArray("menu");
 
-                Map<String, String> item = new HashMap<>();
-                item.put("note", note);
-                item.put("store_info", store_info);
-                item.put("drink_number", getDrinkNumber(menu));
+            Map<String, String> item = new HashMap<>();
+            item.put("note", note);
+            item.put("store_info", store_info);
+            item.put("drink_number", getDrinkNumber(menu));
 
-                data.add(item);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            data.add(item);
         }
 
         String[] from = new String[]{"note", "store_info", "drink_number"};
@@ -153,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
             orderObject.put("store_info", storeInfoSpinner.getSelectedItem());
             orderObject.put("menu", new JSONArray(drinkMenuResult));
             orderObject.saveInBackground();
-
+            
         } catch (JSONException e) {
             e.printStackTrace();
         }
