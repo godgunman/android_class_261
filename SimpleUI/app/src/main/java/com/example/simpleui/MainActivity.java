@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -206,6 +207,13 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_DRINK_MENU);
     }
 
+    private void goToCamera() {
+        Intent intent = new Intent();
+        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Utils.getPhotoUri());
+        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_DRINK_MENU) {
@@ -215,8 +223,8 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (requestCode == REQUEST_TAKE_PHOTO) {
             if (resultCode == RESULT_OK) {
-                Bitmap bm = data.getParcelableExtra("data");
-                photoImageView.setImageBitmap(bm);
+                Uri uri = Utils.getPhotoUri();
+                photoImageView.setImageURI(uri);
             }
         }
     }
@@ -237,9 +245,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_take_photo) {
-            Intent intent = new Intent();
-            intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+            goToCamera();
         }
 
         return super.onOptionsItemSelected(item);
