@@ -1,5 +1,6 @@
 package com.example.simpleui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_DRINK_MENU = 1;
     private String drinkMenuResult;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
 
         inputText.setText(sp.getString("inputText", ""));
         hideCheckBox.setChecked(sp.getBoolean("hideCheckBox", false));
+
+        progressDialog = new ProgressDialog(this);
 
         setHistory();
         setStoreInfo();
@@ -157,6 +162,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void submit(View view) {
+
+        progressDialog.setTitle("Loading...");
+        progressDialog.show();
+
         String text = inputText.getText().toString();
         if (hideCheckBox.isChecked()) {
             text = "*********";
@@ -172,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
             orderObject.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
+                    progressDialog.dismiss();
                     setHistory();
                     Toast.makeText(MainActivity.this, "done", Toast.LENGTH_LONG).show();
                 }
