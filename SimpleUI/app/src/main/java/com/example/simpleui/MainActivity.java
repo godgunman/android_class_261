@@ -121,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null) {
                     orderObjectToListView(objects);
+                    historyListView.setVisibility(View.VISIBLE);
+                    findViewById(R.id.progressBar).setVisibility(View.GONE);
                 }
             }
         });
