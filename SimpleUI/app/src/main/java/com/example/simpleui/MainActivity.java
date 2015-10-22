@@ -96,9 +96,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setStoreInfo() {
-        String[] data = getResources().getStringArray(R.array.storeInfo);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, data);
-        storeInfoSpinner.setAdapter(adapter);
+        ParseQuery<ParseObject> query = new ParseQuery<>("StoreInfo");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                String[] data = new String[objects.size()];
+
+                for (int i = 0; i < objects.size(); i++) {
+                    ParseObject object = objects.get(i);
+                    data[i] = object.getString("name") + "," + object.getString("address");
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
+                        android.R.layout.simple_spinner_dropdown_item, data);
+                storeInfoSpinner.setAdapter(adapter);
+            }
+        });
+
     }
 
     private void setHistory() {
