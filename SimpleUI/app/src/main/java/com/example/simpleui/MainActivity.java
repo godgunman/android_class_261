@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView historyListView;
     private Spinner storeInfoSpinner;
+    private ImageView photoImageView;
 
     private static final int REQUEST_DRINK_MENU = 1;
     private static final int REQUEST_TAKE_PHOTO = 2;
@@ -97,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
         inputText.setText(sp.getString("inputText", ""));
         hideCheckBox.setChecked(sp.getBoolean("hideCheckBox", false));
 
+        photoImageView = (ImageView) findViewById(R.id.photo);
         progressDialog = new ProgressDialog(this);
 
         setHistory();
@@ -208,6 +212,11 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 drinkMenuResult = data.getStringExtra("result");
                 Log.d("debug", drinkMenuResult);
+            }
+        } else if (requestCode == REQUEST_TAKE_PHOTO) {
+            if (resultCode == RESULT_OK) {
+                Bitmap bm = data.getParcelableExtra("data");
+                photoImageView.setImageBitmap(bm);
             }
         }
     }
