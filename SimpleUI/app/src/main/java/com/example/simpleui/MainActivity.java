@@ -147,22 +147,20 @@ public class MainActivity extends AppCompatActivity {
             text = "*********";
         }
         try {
-            Toast.makeText(this, text, Toast.LENGTH_LONG).show();
             inputText.setText("");
 
             ParseObject orderObject = new ParseObject("Order");
             orderObject.put("note", text);
             orderObject.put("store_info", storeInfoSpinner.getSelectedItem());
-            orderObject.put("menu", new JSONArray(drinkMenuResult));
+            if (drinkMenuResult != null)
+                orderObject.put("menu", new JSONArray(drinkMenuResult));
             orderObject.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
-                    Log.d("debug", "[line: 157] done");
+                    setHistory();
+                    Toast.makeText(MainActivity.this, "done", Toast.LENGTH_LONG).show();
                 }
             });
-            Log.d("debug", "[line: 160]");
-
-            setHistory();
         } catch (JSONException e) {
             e.printStackTrace();
         }
