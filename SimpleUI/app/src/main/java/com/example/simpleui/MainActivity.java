@@ -19,9 +19,11 @@ import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -100,16 +102,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setHistory() {
-
         ParseQuery<ParseObject> query = new ParseQuery<>("Order");
-        List<ParseObject> rawData = null;
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    orderObjectToListView(objects);
+                }
+            }
+        });
+    }
 
-        try {
-            rawData = query.find();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+    private void orderObjectToListView(List<ParseObject> rawData) {
         List<Map<String, String>> data = new ArrayList<>();
 
         for (int i = 0; i < rawData.size(); i++) {
@@ -142,23 +146,23 @@ public class MainActivity extends AppCompatActivity {
         if (hideCheckBox.isChecked()) {
             text = "*********";
         }
-        JSONObject object = new JSONObject();
         try {
-            object.put("note", text);
-            object.put("store_info", (String) storeInfoSpinner.getSelectedItem());
-            object.put("menu", new JSONArray(drinkMenuResult));
-
-            Utils.writeFile(this, "history.txt", object.toString() + "\n");
             Toast.makeText(this, text, Toast.LENGTH_LONG).show();
             inputText.setText("");
-            setHistory();
 
             ParseObject orderObject = new ParseObject("Order");
             orderObject.put("note", text);
             orderObject.put("store_info", storeInfoSpinner.getSelectedItem());
             orderObject.put("menu", new JSONArray(drinkMenuResult));
-            orderObject.saveInBackground();
-            
+            orderObject.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    Log.d("debug", "[line: 157] done");
+                }
+            });
+            Log.d("debug", "[line: 160]");
+
+            setHistory();
         } catch (JSONException e) {
             e.printStackTrace();
         }
