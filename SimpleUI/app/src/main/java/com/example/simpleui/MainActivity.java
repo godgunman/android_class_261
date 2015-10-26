@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -99,6 +100,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         historyListView = (ListView) findViewById(R.id.historyListView);
+        historyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                goToOrderDetail();
+            }
+        });
+
         storeInfoSpinner = (Spinner) findViewById(R.id.storeInfoSpinner);
 
         inputText.setText(sp.getString("inputText", ""));
@@ -109,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
         setHistory();
         setStoreInfo();
+
     }
 
     private void setStoreInfo() {
@@ -221,6 +230,12 @@ public class MainActivity extends AppCompatActivity {
         intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Utils.getPhotoUri());
         startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+    }
+
+    private void goToOrderDetail() {
+        Intent intent = new Intent();
+        intent.setClass(this, OrderDetailActivity.class);
+        startActivity(intent);
     }
 
     @Override
