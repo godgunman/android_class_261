@@ -1,5 +1,6 @@
 package com.example.simpleui;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,20 +23,21 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         addressTextView.setText(address);
 
-        // will replace to AsyncTask
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String url = Utils.getGEOUrl(address);
-                final String result = new String(Utils.urlToBytes(url));
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        addressTextView.setText(Utils.getLatLngFromJSON(result));
-                    }
-                });
 
-            }
-        }).start();
+        GeoCodingTask task = new GeoCodingTask();
+        task.execute();
+
+    }
+
+    private class GeoCodingTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            String url = Utils.getGEOUrl("Taipei");
+            String result = new String(Utils.urlToBytes(url));
+            Log.d("debug", result);
+            return null;
+        }
     }
 }
