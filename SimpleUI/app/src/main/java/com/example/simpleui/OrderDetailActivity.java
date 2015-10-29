@@ -25,19 +25,23 @@ public class OrderDetailActivity extends AppCompatActivity {
 
 
         GeoCodingTask task = new GeoCodingTask();
-        task.execute();
+        task.execute(address);
 
     }
 
-    private class GeoCodingTask extends AsyncTask<Void, Void, Void> {
+    private class GeoCodingTask extends AsyncTask<String, Void, String> {
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected String doInBackground(String... params) {
+            String url = Utils.getGEOUrl(params[0]);
+            String json = new String(Utils.urlToBytes(url));
+            String latLng = Utils.getLatLngFromJSON(json);
+            return latLng;
+        }
 
-            String url = Utils.getGEOUrl("Taipei");
-            String result = new String(Utils.urlToBytes(url));
-            Log.d("debug", result);
-            return null;
+        @Override
+        protected void onPostExecute(String result) {
+            addressTextView.setText(result);
         }
     }
 }
