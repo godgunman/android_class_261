@@ -29,13 +29,14 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     }
 
-    private class GeoCodingTask extends AsyncTask<String, Void, String> {
+    private class GeoCodingTask extends AsyncTask<String, Integer, String> {
 
         @Override
         protected String doInBackground(String... params) {
             String url = Utils.getGEOUrl(params[0]);
             String json = new String(Utils.urlToBytes(url));
             String latLng = Utils.getLatLngFromJSON(json);
+
             return latLng;
         }
 

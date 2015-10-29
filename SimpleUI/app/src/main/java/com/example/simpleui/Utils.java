@@ -76,7 +76,7 @@ public class Utils {
 
             byte[] buffer = new byte[1024];
             int len = 0;
-            while( (len = is.read(buffer)) != -1) {
+            while ((len = is.read(buffer)) != -1) {
                 baos.write(buffer, 0, len);
             }
             return baos.toByteArray();
@@ -97,7 +97,7 @@ public class Utils {
 
             byte[] buffer = new byte[1024];
             int len = 0;
-            while( (len = is.read(buffer)) != -1) {
+            while ((len = is.read(buffer)) != -1) {
                 baos.write(buffer, 0, len);
             }
             return baos.toByteArray();
@@ -118,6 +118,10 @@ public class Utils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String getStaticMapUrl(String center, String zoom, String size) {
+        return String.format("https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=%s&size=%s", center, zoom, size);
     }
 
     public static String getLatLngFromJSON(String jsonString) {
