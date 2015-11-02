@@ -38,5 +38,13 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/webView"
             android:src="@mipmap/ic_launcher" />
+
+        <fragment
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:id="@+id/fragment"
+            android:layout_below="@+id/imageView"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </ScrollView>
