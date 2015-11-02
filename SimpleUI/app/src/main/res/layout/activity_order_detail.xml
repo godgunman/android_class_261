@@ -28,7 +28,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/address"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -37,14 +37,15 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/webView"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/ic_launcher"
+            android:visibility="gone" />
 
         <fragment
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="500px"
             android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:id="@+id/fragment"
-            android:layout_below="@+id/imageView"
+            android:id="@+id/googleMap"
+            android:layout_below="@+id/address"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </ScrollView>

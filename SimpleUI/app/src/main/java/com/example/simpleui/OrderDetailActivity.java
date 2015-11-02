@@ -10,11 +10,21 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+
 public class OrderDetailActivity extends AppCompatActivity {
 
     private TextView addressTextView;
     private WebView webView;
     private ImageView imageView;
+
+    private SupportMapFragment mapFragment;
+    private GoogleMap googleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +36,29 @@ public class OrderDetailActivity extends AppCompatActivity {
         addressTextView = (TextView) findViewById(R.id.address);
         imageView = (ImageView) findViewById(R.id.imageView);
 
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.googleMap);
+        googleMap = mapFragment.getMap();
+
         String storeInfo = getIntent().getStringExtra("store_info");
         final String address = storeInfo.split(",")[1];
         Log.d("debug", "address=" + address);
 
         addressTextView.setText(address);
 
-
         GeoCodingTask task = new GeoCodingTask();
         task.execute(address);
 
     }
+
+    private void setupGoogleMap(String latLngStr) {
+        Double lat = Double.valueOf(latLngStr.split(",")[0]);
+        Double lng = Double.valueOf(latLngStr.split(",")[1]);
+
+        LatLng latLng = new LatLng(lat, lng);
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+    }
+
 
     private class GeoCodingTask extends AsyncTask<String, Integer, String> {
 
@@ -52,6 +74,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String latLng) {
             addressTextView.setText(latLng);
+            setupGoogleMap(latLng);
 
             String staticMapUrl = Utils.getStaticMapUrl(latLng, "17", "300x600");
             webView.loadUrl(staticMapUrl);
