@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -119,7 +120,10 @@ public class MainActivity extends AppCompatActivity {
 
         setHistory();
         setStoreInfo();
-
+        Intent i = getIntent();
+        String username = i.getStringExtra("username");
+        TextView nameTextView = (TextView) findViewById(R.id.textView);
+        nameTextView.setText(username);
     }
 
     private void setStoreInfo() {
