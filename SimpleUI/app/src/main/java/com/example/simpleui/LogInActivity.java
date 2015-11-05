@@ -20,10 +20,11 @@ public class LogInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_log_in);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FacebookSdk.sdkInitialize(getApplicationContext());
+
         callbackManager = CallbackManager.Factory.create();
         setUpFacebookLogin();
     }
