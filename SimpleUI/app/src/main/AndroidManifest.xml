@@ -16,7 +16,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCp6xSmvaLnNJn8EKOd8jqpSbbaUIPFVDU" />
-
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -30,6 +30,11 @@
             android:name=".DrinkMenuActivity"
             android:label="@string/title_activity_drink_menu" />
         <activity android:name=".OrderDetailActivity"></activity>
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

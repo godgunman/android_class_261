@@ -7,4 +7,6 @@
 
     <string name="title_activity_pre">PreActivity</string>
     <string name="title_activity_drink_menu">DrinkMenuActivity</string>
+    <string name="facebook_app_id">1741702769391398</string>
+
 </resources>
